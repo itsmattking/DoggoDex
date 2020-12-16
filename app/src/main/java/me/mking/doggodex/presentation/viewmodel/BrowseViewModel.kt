@@ -7,8 +7,11 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import me.mking.doggodex.domain.usecases.GetDogBreedsUseCase
 import me.mking.doggodex.presentation.viewstate.BrowseViewState
+import javax.inject.Inject
 
-class BrowseViewModel(private val getDogBreedsUseCase: GetDogBreedsUseCase) : ViewModel() {
+class BrowseViewModel @Inject constructor(
+    private val getDogBreedsUseCase: GetDogBreedsUseCase
+) : ViewModel() {
     private val _state = MutableLiveData<BrowseViewState>()
     val state: LiveData<BrowseViewState> = _state
 
