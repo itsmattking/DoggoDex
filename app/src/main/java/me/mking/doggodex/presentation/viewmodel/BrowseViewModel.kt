@@ -1,5 +1,6 @@
 package me.mking.doggodex.presentation.viewmodel
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,7 +10,7 @@ import me.mking.doggodex.domain.usecases.GetDogBreedsUseCase
 import me.mking.doggodex.presentation.viewstate.BrowseViewState
 import javax.inject.Inject
 
-class BrowseViewModel @Inject constructor(
+class BrowseViewModel @ViewModelInject constructor(
     private val getDogBreedsUseCase: GetDogBreedsUseCase
 ) : ViewModel() {
     private val _state = MutableLiveData<BrowseViewState>()

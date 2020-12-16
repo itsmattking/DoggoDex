@@ -7,6 +7,7 @@ import dagger.hilt.android.components.ApplicationComponent
 import me.mking.doggodex.data.datastores.DogBreedsDataStore
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 @Module
 @InstallIn(ApplicationComponent::class)
@@ -18,7 +19,8 @@ object DataStoreModule {
     ): DogBreedsDataStore {
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl("https://dog.deo/api/")
+            .addConverterFactory(MoshiConverterFactory.create())
+            .baseUrl("https://dog.ceo/api/")
             .build()
             .create(DogBreedsDataStore::class.java)
     }
