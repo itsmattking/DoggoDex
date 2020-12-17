@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import dagger.hilt.android.AndroidEntryPoint
 import me.mking.doggodex.R
+import me.mking.doggodex.databinding.BrowseFragmentBinding
 import me.mking.doggodex.presentation.viewmodel.BrowseViewModel
+import me.mking.doggodex.presentation.viewstate.BrowseNavigation
 import me.mking.doggodex.presentation.viewstate.BrowseViewState
 
 @AndroidEntryPoint
@@ -22,20 +23,41 @@ class BrowseFragment : Fragment() {
 
     private val viewModel: BrowseViewModel by viewModels()
 
+    private lateinit var viewBinding: BrowseFragmentBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.browse_fragment, container, false)
+        return inflater.inflate(R.layout.browse_fragment, container, false).apply {
+            viewBinding = BrowseFragmentBinding.bind(this)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.state.observe(viewLifecycleOwner) {
+
+        viewModel.state.observe(viewLifecycleOwner) { handleState(it) }
+        viewModel.navigation.observe(viewLifecycleOwner) {
             when (it) {
-                BrowseViewState.Loading -> Unit
-                BrowseViewState.Ready -> Unit
+                is BrowseNavigation.ToBreedImages -> Unit
             }
+        }
+        viewModel.loadDogBreeds()
+    }
+
+    private fun handleState(state: BrowseViewState) {
+        when (state) {
+            BrowseViewState.Loading -> viewBinding.browseProgressBar.isVisible = true
+            is BrowseViewState.Ready -> handleReadyState(state)
+            BrowseViewState.Error -> Unit
+        }
+    }
+
+    private fun handleReadyState(state: BrowseViewState.Ready) {
+        viewBinding.browseProgressBar.isVisible = false
+        viewBinding.dogBreedRecycler.adapter = DogBreedRecyclerAdapter(state.breeds) {
+            viewModel.onDogBreedClicked(it)
         }
     }
 
