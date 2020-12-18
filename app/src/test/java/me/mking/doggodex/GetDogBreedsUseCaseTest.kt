@@ -4,7 +4,7 @@ import com.google.common.truth.Truth
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import me.mking.doggodex.data.DataResult
+import me.mking.doggodex.common.data.DataResult
 import me.mking.doggodex.domain.entities.DogBreedEntity
 import me.mking.doggodex.domain.repositories.DogBreedRepository
 import me.mking.doggodex.domain.usecases.GetDogBreedsUseCase

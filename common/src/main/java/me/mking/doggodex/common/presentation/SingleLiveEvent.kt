@@ -1,4 +1,4 @@
-package me.mking.doggodex
+package me.mking.doggodex.common.presentation
 
 import android.util.Log
 import androidx.annotation.MainThread

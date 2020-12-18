@@ -7,7 +7,7 @@ import com.google.common.truth.Truth
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
-import me.mking.doggodex.data.DataResult
+import me.mking.doggodex.common.data.DataResult
 import me.mking.doggodex.domain.usecases.GetDogBreedsUseCase
 import me.mking.doggodex.presentation.viewmodel.BrowseViewModel
 import me.mking.doggodex.presentation.viewstate.BrowseViewState

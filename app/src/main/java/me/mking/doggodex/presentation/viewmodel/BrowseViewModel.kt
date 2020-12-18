@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import me.mking.doggodex.SingleLiveEvent
-import me.mking.doggodex.data.DataResult
+import me.mking.doggodex.common.data.DataResult
+import me.mking.doggodex.common.presentation.SingleLiveEvent
 import me.mking.doggodex.domain.entities.DogBreedEntity
 import me.mking.doggodex.domain.usecases.GetDogBreedsUseCase
 import me.mking.doggodex.presentation.viewstate.BrowseNavigation
@@ -20,7 +20,8 @@ class BrowseViewModel @ViewModelInject constructor(
     private val _state = MutableLiveData<BrowseViewState>()
     val state: LiveData<BrowseViewState> = _state
 
-    private val _navigation: SingleLiveEvent<BrowseNavigation> = SingleLiveEvent()
+    private val _navigation: SingleLiveEvent<BrowseNavigation> =
+        SingleLiveEvent()
     val navigation: LiveData<BrowseNavigation> = _navigation
 
     private val dogBreeds: MutableList<DogBreedEntity> = mutableListOf()
