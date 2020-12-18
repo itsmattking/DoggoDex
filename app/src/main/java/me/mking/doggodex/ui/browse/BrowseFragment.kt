@@ -28,21 +28,14 @@ class BrowseFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.browse_fragment, container, false).apply {
-            viewBinding = BrowseFragmentBinding.bind(this)
-        }
-    }
+    ) = BrowseFragmentBinding.inflate(inflater).apply {
+            viewBinding = this
+        }.root
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         viewModel.state.observe(viewLifecycleOwner) { handleState(it) }
-        viewModel.navigation.observe(viewLifecycleOwner) {
-            when (it) {
-                is BrowseNavigation.ToBreedImages -> Unit
-            }
-        }
+        viewModel.navigation.observe(viewLifecycleOwner) { handleNavigation(it) }
         viewModel.loadDogBreeds()
     }
 
@@ -58,6 +51,12 @@ class BrowseFragment : Fragment() {
         viewBinding.browseProgressBar.isVisible = false
         viewBinding.dogBreedRecycler.adapter = DogBreedRecyclerAdapter(state.breeds) {
             viewModel.onDogBreedClicked(it)
+        }
+    }
+
+    private fun handleNavigation(navigation: BrowseNavigation) {
+        when (navigation) {
+            is BrowseNavigation.ToBreedImages -> Unit
         }
     }
 
