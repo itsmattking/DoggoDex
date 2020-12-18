@@ -12,6 +12,7 @@ import me.mking.doggodex.domain.entities.DogBreedEntity
 import me.mking.doggodex.domain.usecases.GetDogBreedsUseCase
 import me.mking.doggodex.presentation.viewstate.BrowseNavigation
 import me.mking.doggodex.presentation.viewstate.BrowseViewState
+import me.mking.doggodex.presentation.viewstate.DogBreedViewData
 
 class BrowseViewModel @ViewModelInject constructor(
     private val getDogBreedsUseCase: GetDogBreedsUseCase
@@ -38,7 +39,7 @@ class BrowseViewModel @ViewModelInject constructor(
                     dogBreeds.addAll(result.data)
                     _state.value = BrowseViewState.Ready(
                         dogBreeds.map {
-                            BrowseViewState.DogBreedViewData(
+                            DogBreedViewData(
                                 breedName = it.name
                             )
                         }

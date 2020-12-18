@@ -3,37 +3,38 @@ package me.mking.doggodex.ui.browse
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import me.mking.doggodex.R
+import me.mking.doggodex.common.ui.BindingRecyclerAdapter
+import me.mking.doggodex.common.ui.BindingViewHolder
 import me.mking.doggodex.databinding.DogBreedRecyclerItemBinding
-import me.mking.doggodex.presentation.viewstate.BrowseViewState
+import me.mking.doggodex.presentation.viewstate.DogBreedViewData
 
 typealias OnDogBreedClick = (Int) -> Unit
 
 class DogBreedRecyclerAdapter(
-    private val data: List<BrowseViewState.DogBreedViewData>,
+    override val data: List<DogBreedViewData>,
     private val onDogBreedClick: OnDogBreedClick? = null
-) :
-    RecyclerView.Adapter<DogBreedRecyclerAdapter.DogBreedViewHolder>() {
+) : BindingRecyclerAdapter<DogBreedViewData, DogBreedRecyclerAdapter.DogBreedViewHolder>(data) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DogBreedViewHolder {
         return DogBreedViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.dog_breed_recycler_item, parent, false)
+                .inflate(R.layout.dog_breed_recycler_item, parent, false),
+            onDogBreedClick
         )
     }
 
-    override fun onBindViewHolder(holder: DogBreedViewHolder, position: Int) {
-        holder.bind(data[position], onDogBreedClick)
-    }
+    override fun onBindViewHolder(holder: DogBreedViewHolder, position: Int) =
+        holder.bind(data[position])
 
     override fun getItemCount() = data.size
 
-    class DogBreedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val viewBinding: DogBreedRecyclerItemBinding =
+    class DogBreedViewHolder(itemView: View, private val onDogBreedClick: OnDogBreedClick?) :
+        BindingViewHolder<DogBreedRecyclerItemBinding, DogBreedViewData>(itemView) {
+        override val viewBinding: DogBreedRecyclerItemBinding =
             DogBreedRecyclerItemBinding.bind(itemView)
 
-        fun bind(data: BrowseViewState.DogBreedViewData, onDogBreedClick: OnDogBreedClick?) {
+        override fun bind(data: DogBreedViewData) {
             viewBinding.dogBreedRecyclerItemTitle.text = data.breedName
             viewBinding.dogBreedRecyclerItem.setOnClickListener {
                 onDogBreedClick?.invoke(adapterPosition)

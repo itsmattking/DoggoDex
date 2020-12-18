@@ -7,5 +7,4 @@ sealed class BrowseViewState {
         val breeds: List<DogBreedViewData>
     ) : BrowseViewState()
 
-    data class DogBreedViewData(val breedName: String)
 }
