@@ -10,6 +10,7 @@ import me.mking.doggodex.common.data.DataResult
 import me.mking.doggodex.common.presentation.SingleLiveEvent
 import me.mking.doggodex.domain.entities.DogBreedEntity
 import me.mking.doggodex.domain.usecases.GetDogBreedsUseCase
+import me.mking.doggodex.presentation.DogBreedInput
 import me.mking.doggodex.presentation.viewstate.BrowseNavigation
 import me.mking.doggodex.presentation.viewstate.BrowseViewState
 import me.mking.doggodex.presentation.viewstate.DogBreedViewData
@@ -28,6 +29,9 @@ class BrowseViewModel @ViewModelInject constructor(
     private val dogBreeds: MutableList<DogBreedEntity> = mutableListOf()
 
     fun loadDogBreeds() {
+        if (dogBreeds.isNotEmpty()) {
+            return
+        }
         _state.value = BrowseViewState.Loading
         viewModelScope.launch {
             when (val result = getDogBreedsUseCase.execute()) {
@@ -50,6 +54,13 @@ class BrowseViewModel @ViewModelInject constructor(
     }
 
     fun onDogBreedClicked(position: Int) {
-        _navigation.value = BrowseNavigation.ToBreedImages(dogBreeds[position])
+        val dogBreedEntity = dogBreeds[position]
+        _navigation.value = BrowseNavigation.ToBreedImages(
+            DogBreedInput(
+                dogBreedEntity.name,
+                dogBreedEntity.breed,
+                dogBreedEntity.subBreed
+            )
+        )
     }
 }

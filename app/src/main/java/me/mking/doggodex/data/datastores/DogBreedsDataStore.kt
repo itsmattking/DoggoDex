@@ -11,7 +11,7 @@ interface DogBreedsDataStore {
 
     @GET("breed/{breedName}/images/random/{imageCount}")
     suspend fun getRandomBreedImages(
-        @Path("breedName") breedName: String,
+        @Path("breedName", encoded = true) breedName: String,
         @Path("imageCount") imageCount: Int
     ): DogBreedImagesResponse
 }

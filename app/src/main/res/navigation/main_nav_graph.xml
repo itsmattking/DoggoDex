@@ -9,5 +9,18 @@
         android:id="@+id/browseFragment"
         android:name="me.mking.doggodex.ui.browse.BrowseFragment"
         android:label="browse_fragment"
-        tools:layout="@layout/browse_fragment" />
+        tools:layout="@layout/browse_fragment" >
+        <action
+            android:id="@+id/action_browseFragment_to_dogBreedImagesFragment"
+            app:destination="@id/dogBreedImagesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dogBreedImagesFragment"
+        android:name="me.mking.doggodex.ui.browse.DogBreedImagesFragment"
+        android:label="fragment_dog_breed_images"
+        tools:layout="@layout/fragment_dog_breed_images">
+        <argument
+            android:name="dogBreedInput"
+            app:argType="me.mking.doggodex.presentation.DogBreedInput" />
+    </fragment>
 </navigation>
