@@ -1,7 +1,6 @@
 package me.mking.doggodex.ui.browse
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -54,6 +53,8 @@ class DogBreedImagesFragment : Fragment() {
     }
 
     private fun handleReadyState(state: DogBreedImagesViewState.Ready) {
-        viewBinding.dogBreedImagesRecycler.adapter = DogBreedImagesRecyclerAdapter(state.dogBreedImages)
+        viewBinding.dogBreedImagesRecycler.apply {
+            adapter = DogBreedImagesRecyclerAdapter(state.dogBreedImages)
+        }
     }
 }
