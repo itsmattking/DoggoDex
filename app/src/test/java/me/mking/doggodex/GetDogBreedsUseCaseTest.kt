@@ -30,13 +30,23 @@ class GetDogBreedsUseCaseTest {
     }
 
     private val mockDogBreedsRepository: DogBreedRepository = mockk {
-        coEvery { getDogBreeds() }.returns(SOME_DOG_BREED_LIST)
+        coEvery { getDogBreeds() } returns SOME_DOG_BREED_LIST
     }
     private val subject = GetDogBreedsUseCase(mockDogBreedsRepository)
 
     @Test
-    fun testGivenGetDogBreedsUseCase_whenExecute_thenDataIsReturned() = runBlocking {
+    fun givenUseCase_whenExecute_thenResultIsSuccess() = runBlocking {
         val result = subject.execute()
         Truth.assertThat(result).isInstanceOf(DataResult.Success::class.java)
+        val successResult = result as DataResult.Success
+        Truth.assertThat(successResult.data).isEqualTo(SOME_DOG_BREED_LIST)
     }
+
+    @Test
+    fun givenUseCaseAndRepositoryThrowsException_whenExecute_thenResultIsError() = runBlocking {
+        coEvery { mockDogBreedsRepository.getDogBreeds() } throws Exception("Some Exception")
+        val result = subject.execute()
+        Truth.assertThat(result).isInstanceOf(DataResult.Error::class.java)
+    }
+
 }
