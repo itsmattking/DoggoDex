@@ -42,6 +42,9 @@ class DogBreedsViewModel @ViewModelInject constructor(
     }
 
     fun onDogBreedClicked(position: Int) {
+        if (position < 0 || position >= dogBreeds.size) {
+            return
+        }
         val dogBreedEntity = dogBreeds[position]
         _navigation.value = DogBreedsNavigation.ToBreedImages(
             DogBreedInput(
@@ -52,8 +55,5 @@ class DogBreedsViewModel @ViewModelInject constructor(
         )
     }
 
-    private fun alreadyLoaded() = with(_state.value) {
-        this is DogBreedsViewState.Ready
-                && this.breeds.isNotEmpty()
-    }
+    private fun alreadyLoaded() = dogBreeds.isNotEmpty()
 }
