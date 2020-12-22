@@ -1,11 +1,11 @@
-package me.mking.doggodex.data.datastores
+package me.mking.doggodex.data.services
 
 import me.mking.doggodex.data.models.DogBreedImagesResponse
 import me.mking.doggodex.data.models.DogBreedListResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-interface DogBreedsDataStore {
+interface DogBreedsService {
     @GET("breeds/list/all")
     suspend fun getAllBreeds(): DogBreedListResponse
 

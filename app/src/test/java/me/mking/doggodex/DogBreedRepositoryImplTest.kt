@@ -1,13 +1,15 @@
 package me.mking.doggodex
 
+import com.google.common.truth.Truth
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
-import me.mking.doggodex.data.datastores.DogBreedsDataStore
 import me.mking.doggodex.data.mappers.DogBreedImagesResponseMapper
 import me.mking.doggodex.data.mappers.DogBreedListResponseMapper
 import me.mking.doggodex.data.models.DogBreedImagesResponse
 import me.mking.doggodex.data.models.DogBreedListResponse
 import me.mking.doggodex.data.repositories.DogBreedRepositoryImpl
+import me.mking.doggodex.data.repositories.DogBreedsServiceException
+import me.mking.doggodex.data.services.DogBreedsService
 import me.mking.doggodex.domain.entities.DogBreedEntity
 import me.mking.doggodex.domain.repositories.DogBreedRepository
 import org.junit.Test
@@ -40,7 +42,7 @@ class DogBreedRepositoryImplTest {
         const val SOME_RANDOM_IMAGE_COUNT = 30
     }
 
-    private val mockDogBreedsDataStore: DogBreedsDataStore = mockk {
+    private val mockDogBreedsService: DogBreedsService = mockk {
         coEvery { getAllBreeds() }.returns(SOME_DOG_BREED_LIST_RESPONSE)
         coEvery { getRandomBreedImages(any(), any()) }.returns(SOME_DOG_BREED_IMAGES_RESPONSE)
     }
@@ -54,7 +56,7 @@ class DogBreedRepositoryImplTest {
     }
 
     private val subject: DogBreedRepository = DogBreedRepositoryImpl(
-        mockDogBreedsDataStore,
+        mockDogBreedsService,
         mockDogBreedListResponseMapper,
         mockDogBreedImagesResponseMapper
     )
@@ -63,7 +65,7 @@ class DogBreedRepositoryImplTest {
     fun givenDogBreedRepository_whenGetAllBreeds_thenDataSourceIsQueriedAndResultIsMapped() =
         runBlocking {
             subject.getDogBreeds()
-            coVerify { mockDogBreedsDataStore.getAllBreeds() }
+            coVerify { mockDogBreedsService.getAllBreeds() }
             verify { mockDogBreedListResponseMapper.map(SOME_DOG_BREED_LIST_RESPONSE) }
         }
 
@@ -71,7 +73,7 @@ class DogBreedRepositoryImplTest {
     fun givenDogBreedRepository_whenGetRandomBreedImages_thenDataSourceIsQueriedAndResultIsMapped() =
         runBlocking {
             subject.getDogBreedImages(SOME_DOG_BREED_ENTITY, SOME_RANDOM_IMAGE_COUNT)
-            coVerify { mockDogBreedsDataStore.getRandomBreedImages("pug", SOME_RANDOM_IMAGE_COUNT) }
+            coVerify { mockDogBreedsService.getRandomBreedImages("pug", SOME_RANDOM_IMAGE_COUNT) }
             verify { mockDogBreedImagesResponseMapper.map(SOME_DOG_BREED_IMAGES_RESPONSE) }
         }
 
@@ -80,12 +82,53 @@ class DogBreedRepositoryImplTest {
         runBlocking {
             subject.getDogBreedImages(SOME_DOG_BREED_ENTITY_WITH_SUB_BREED, SOME_RANDOM_IMAGE_COUNT)
             coVerify {
-                mockDogBreedsDataStore.getRandomBreedImages(
+                mockDogBreedsService.getRandomBreedImages(
                     "retriever/golden",
                     SOME_RANDOM_IMAGE_COUNT
                 )
             }
             verify { mockDogBreedImagesResponseMapper.map(SOME_DOG_BREED_IMAGES_RESPONSE) }
+        }
+
+    @Test
+    fun givenDogBreedRepositoryAndServiceReturnsError_whenGetAllBreeds_thenExceptionIsThrown() =
+        runBlocking {
+            coEvery {
+                mockDogBreedsService.getAllBreeds()
+            } returns SOME_DOG_BREED_LIST_RESPONSE.copy(status = "error")
+
+            var servicesException: Exception? = null
+            try {
+                subject.getDogBreeds()
+            } catch (exception: Exception) {
+                servicesException = exception
+            }
+            Truth.assertThat(servicesException).isInstanceOf(
+                DogBreedsServiceException::class.java
+            )
+        }
+
+    @Test
+    fun givenDogBreedRepositoryAndServiceReturnsError_whenGetRandomBreedImages_thenExceptionIsThrown() =
+        runBlocking {
+            coEvery {
+                mockDogBreedsService.getRandomBreedImages(
+                    any(),
+                    any()
+                )
+            } returns SOME_DOG_BREED_IMAGES_RESPONSE.copy(status = "error")
+            var servicesException: Exception? = null
+            try {
+                subject.getDogBreedImages(
+                    SOME_DOG_BREED_ENTITY,
+                    SOME_RANDOM_IMAGE_COUNT
+                )
+            } catch (exception: Exception) {
+                servicesException = exception
+            }
+            Truth.assertThat(servicesException).isInstanceOf(
+                DogBreedsServiceException::class.java
+            )
         }
 
 }

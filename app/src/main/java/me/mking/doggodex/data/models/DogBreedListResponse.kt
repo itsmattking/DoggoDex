@@ -9,4 +9,8 @@ data class DogBreedListResponse(
     val message: Map<String, List<String>>,
     @field:Json(name = "status")
     val status: String
-)
+) {
+    companion object {
+        const val STATUS_SUCCESS = "success"
+    }
+}
