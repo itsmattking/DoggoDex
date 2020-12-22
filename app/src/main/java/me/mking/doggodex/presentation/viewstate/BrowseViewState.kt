@@ -4,7 +4,7 @@ sealed class BrowseViewState {
     object Loading : BrowseViewState()
     object Error : BrowseViewState()
     data class Ready(
-        val breeds: List<DogBreedViewData>
+        val breeds: List<DogBreedsViewData>
     ) : BrowseViewState()
 
 }

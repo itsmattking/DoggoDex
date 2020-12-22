@@ -9,7 +9,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import me.mking.doggodex.common.data.DataResult
 import me.mking.doggodex.domain.usecases.GetDogBreedsUseCase
-import me.mking.doggodex.presentation.viewmodel.BrowseViewModel
+import me.mking.doggodex.presentation.mapper.DogBreedsViewStateMapper
+import me.mking.doggodex.presentation.viewmodel.DogBreedsViewModel
 import me.mking.doggodex.presentation.viewstate.BrowseViewState
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -18,7 +19,7 @@ import org.robolectric.annotation.Config
 @Config(sdk = [Build.VERSION_CODES.P])
 @RunWith(AndroidJUnit4::class)
 @ExperimentalCoroutinesApi
-class BrowseViewModelTest {
+class DogBreedsViewModelTest {
 
     private val browseViewStateObserver: Observer<BrowseViewState> = mockk {
         every { onChanged(any()) } returns Unit
@@ -28,8 +29,13 @@ class BrowseViewModelTest {
         coEvery { execute() }.returns(DataResult.Success(emptyList()))
     }
 
+    private val mockDogBreedsViewStateMapper: DogBreedsViewStateMapper = mockk {
+        every { map(any()) } returns BrowseViewState.Ready(breeds = emptyList())
+        every { mapToEntities(any()) } returns emptyList()
+    }
+
     @Test
-    fun givenViewModel_whenLoadDogBreeds_thenStateIsLoading() = runBlockingTest {
+    fun givenViewModel_whenLoadDogBreeds_thenStateIsLoadingThenReady() = runBlockingTest {
         val subject = givenSubject()
         subject.loadDogBreeds()
         coVerify { mockGetDogBreedsUseCase.execute() }
@@ -41,8 +47,8 @@ class BrowseViewModelTest {
         }
     }
 
-    private fun givenSubject(): BrowseViewModel {
-        val subject = BrowseViewModel(mockGetDogBreedsUseCase)
+    private fun givenSubject(): DogBreedsViewModel {
+        val subject = DogBreedsViewModel(mockGetDogBreedsUseCase, mockDogBreedsViewStateMapper)
         subject.state.observeForever(browseViewStateObserver)
         return subject
     }

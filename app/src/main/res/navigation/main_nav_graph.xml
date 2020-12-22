@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/browseFragment"
-        android:name="me.mking.doggodex.ui.browse.BrowseFragment"
+        android:name="me.mking.doggodex.ui.browse.DogBreedsFragment"
         android:label="browse_fragment"
         tools:layout="@layout/browse_fragment" >
         <action

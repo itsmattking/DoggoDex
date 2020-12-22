@@ -5,9 +5,7 @@ import me.mking.doggodex.domain.entities.DogBreedImageEntity
 import javax.inject.Inject
 
 class DogBreedImagesResponseMapper @Inject constructor() {
-    fun map(dogBreedImagesResponse: DogBreedImagesResponse): List<DogBreedImageEntity> {
-        return dogBreedImagesResponse.message.map {
-            DogBreedImageEntity(it)
-        }
+    fun map(dogBreedImagesResponse: DogBreedImagesResponse) = dogBreedImagesResponse.message.map {
+        DogBreedImageEntity(it)
     }
 }

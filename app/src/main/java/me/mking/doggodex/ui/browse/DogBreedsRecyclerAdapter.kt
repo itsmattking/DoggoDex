@@ -7,14 +7,14 @@ import me.mking.doggodex.R
 import me.mking.doggodex.common.ui.BindingRecyclerAdapter
 import me.mking.doggodex.common.ui.BindingViewHolder
 import me.mking.doggodex.databinding.DogBreedRecyclerItemBinding
-import me.mking.doggodex.presentation.viewstate.DogBreedViewData
+import me.mking.doggodex.presentation.viewstate.DogBreedsViewData
 
 typealias OnDogBreedClick = (Int) -> Unit
 
-class DogBreedRecyclerAdapter(
-    override val data: List<DogBreedViewData>,
+class DogBreedsRecyclerAdapter(
+    override val data: List<DogBreedsViewData>,
     private val onDogBreedClick: OnDogBreedClick? = null
-) : BindingRecyclerAdapter<DogBreedViewData, DogBreedRecyclerAdapter.DogBreedViewHolder>(data) {
+) : BindingRecyclerAdapter<DogBreedsViewData, DogBreedsRecyclerAdapter.DogBreedViewHolder>(data) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DogBreedViewHolder {
         return DogBreedViewHolder(
@@ -30,11 +30,11 @@ class DogBreedRecyclerAdapter(
     override fun getItemCount() = data.size
 
     class DogBreedViewHolder(itemView: View, private val onDogBreedClick: OnDogBreedClick?) :
-        BindingViewHolder<DogBreedRecyclerItemBinding, DogBreedViewData>(itemView) {
+        BindingViewHolder<DogBreedRecyclerItemBinding, DogBreedsViewData>(itemView) {
         override val viewBinding: DogBreedRecyclerItemBinding =
             DogBreedRecyclerItemBinding.bind(itemView)
 
-        override fun bind(data: DogBreedViewData) {
+        override fun bind(data: DogBreedsViewData) {
             viewBinding.dogBreedRecyclerItemTitle.text = data.breedName
             viewBinding.dogBreedRecyclerItem.setOnClickListener {
                 onDogBreedClick?.invoke(adapterPosition)

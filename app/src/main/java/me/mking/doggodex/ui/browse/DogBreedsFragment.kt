@@ -11,18 +11,18 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import me.mking.doggodex.R
 import me.mking.doggodex.databinding.BrowseFragmentBinding
-import me.mking.doggodex.presentation.viewmodel.BrowseViewModel
+import me.mking.doggodex.presentation.viewmodel.DogBreedsViewModel
 import me.mking.doggodex.presentation.viewstate.BrowseNavigation
 import me.mking.doggodex.presentation.viewstate.BrowseViewState
 
 @AndroidEntryPoint
-class BrowseFragment : Fragment() {
+class DogBreedsFragment : Fragment() {
 
     companion object {
-        fun newInstance() = BrowseFragment()
+        fun newInstance() = DogBreedsFragment()
     }
 
-    private val viewModel: BrowseViewModel by viewModels()
+    private val viewModel: DogBreedsViewModel by viewModels()
 
     private lateinit var viewBinding: BrowseFragmentBinding
 
@@ -51,7 +51,7 @@ class BrowseFragment : Fragment() {
 
     private fun handleReadyState(state: BrowseViewState.Ready) {
         viewBinding.browseProgressBar.isVisible = false
-        viewBinding.dogBreedRecycler.adapter = DogBreedRecyclerAdapter(state.breeds) {
+        viewBinding.dogBreedRecycler.adapter = DogBreedsRecyclerAdapter(state.breeds) {
             viewModel.onDogBreedClicked(it)
         }
     }

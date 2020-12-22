@@ -6,17 +6,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import me.mking.doggodex.common.data.DataResult
+import me.mking.doggodex.common.Extensions.replaceWith
 import me.mking.doggodex.common.presentation.SingleLiveEvent
 import me.mking.doggodex.domain.entities.DogBreedEntity
 import me.mking.doggodex.domain.usecases.GetDogBreedsUseCase
 import me.mking.doggodex.presentation.DogBreedInput
+import me.mking.doggodex.presentation.mapper.DogBreedsViewStateMapper
 import me.mking.doggodex.presentation.viewstate.BrowseNavigation
 import me.mking.doggodex.presentation.viewstate.BrowseViewState
-import me.mking.doggodex.presentation.viewstate.DogBreedViewData
 
-class BrowseViewModel @ViewModelInject constructor(
-    private val getDogBreedsUseCase: GetDogBreedsUseCase
+class DogBreedsViewModel @ViewModelInject constructor(
+    private val getDogBreedsUseCase: GetDogBreedsUseCase,
+    private val dogBreedsViewStateMapper: DogBreedsViewStateMapper
 ) : ViewModel() {
 
     private val _state = MutableLiveData<BrowseViewState>()
@@ -29,27 +30,14 @@ class BrowseViewModel @ViewModelInject constructor(
     private val dogBreeds: MutableList<DogBreedEntity> = mutableListOf()
 
     fun loadDogBreeds() {
-        if (dogBreeds.isNotEmpty()) {
+        if (alreadyLoaded()) {
             return
         }
         _state.value = BrowseViewState.Loading
         viewModelScope.launch {
-            when (val result = getDogBreedsUseCase.execute()) {
-                is DataResult.Error -> {
-                    _state.value = BrowseViewState.Error
-                }
-                is DataResult.Success -> {
-                    dogBreeds.clear()
-                    dogBreeds.addAll(result.data)
-                    _state.value = BrowseViewState.Ready(
-                        dogBreeds.map {
-                            DogBreedViewData(
-                                breedName = it.name
-                            )
-                        }
-                    )
-                }
-            }
+            val result = getDogBreedsUseCase.execute()
+            dogBreeds.replaceWith(dogBreedsViewStateMapper.mapToEntities(result))
+            _state.value = dogBreedsViewStateMapper.map(result)
         }
     }
 
@@ -62,5 +50,10 @@ class BrowseViewModel @ViewModelInject constructor(
                 dogBreedEntity.subBreed
             )
         )
+    }
+
+    private fun alreadyLoaded() = with(_state.value) {
+        this is BrowseViewState.Ready
+                && this.breeds.isNotEmpty()
     }
 }
