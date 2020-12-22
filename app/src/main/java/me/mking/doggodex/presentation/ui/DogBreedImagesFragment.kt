@@ -1,4 +1,4 @@
-package me.mking.doggodex.ui.browse
+package me.mking.doggodex.presentation.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -48,13 +48,13 @@ class DogBreedImagesFragment : Fragment() {
             DogBreedImagesViewState.Loading -> viewBinding.dogBreedImagesProgressBar.isVisible =
                 true
             is DogBreedImagesViewState.Ready -> handleReadyState(state)
-            DogBreedImagesViewState.Error -> Unit
+            DogBreedImagesViewState.Error -> viewBinding.loadingError.isVisible = true
         }
     }
 
     private fun handleReadyState(state: DogBreedImagesViewState.Ready) {
-        viewBinding.dogBreedImagesRecycler.apply {
-            adapter = DogBreedImagesRecyclerAdapter(state.dogBreedImages)
-        }
+        viewBinding.loadingError.isVisible = false
+        viewBinding.dogBreedImagesRecycler.adapter =
+            DogBreedImagesRecyclerAdapter(state.dogBreedImages)
     }
 }

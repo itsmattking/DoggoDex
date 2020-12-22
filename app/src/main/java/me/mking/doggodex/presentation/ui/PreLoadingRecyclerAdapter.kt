@@ -1,4 +1,4 @@
-package me.mking.doggodex.ui.browse
+package me.mking.doggodex.presentation.ui
 
 import android.content.Context
 

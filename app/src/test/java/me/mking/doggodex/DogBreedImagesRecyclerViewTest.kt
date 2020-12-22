@@ -1,12 +1,11 @@
 package me.mking.doggodex
 
 import android.app.Activity
-import com.google.common.truth.Truth
 import io.mockk.*
 import me.mking.doggodex.presentation.viewstate.DogBreedImagesViewState
-import me.mking.doggodex.ui.browse.Direction
-import me.mking.doggodex.ui.browse.DogBreedImagesRecyclerAdapter
-import me.mking.doggodex.ui.browse.DogBreedImagesRecyclerView
+import me.mking.doggodex.presentation.ui.Direction
+import me.mking.doggodex.presentation.ui.DogBreedImagesRecyclerAdapter
+import me.mking.doggodex.presentation.ui.DogBreedImagesRecyclerView
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

@@ -11,7 +11,7 @@ import me.mking.doggodex.common.data.DataResult
 import me.mking.doggodex.domain.usecases.GetDogBreedsUseCase
 import me.mking.doggodex.presentation.mapper.DogBreedsViewStateMapper
 import me.mking.doggodex.presentation.viewmodel.DogBreedsViewModel
-import me.mking.doggodex.presentation.viewstate.BrowseViewState
+import me.mking.doggodex.presentation.viewstate.DogBreedsViewState
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
@@ -21,7 +21,7 @@ import org.robolectric.annotation.Config
 @ExperimentalCoroutinesApi
 class DogBreedsViewModelTest {
 
-    private val browseViewStateObserver: Observer<BrowseViewState> = mockk {
+    private val dogBreedsViewStateObserver: Observer<DogBreedsViewState> = mockk {
         every { onChanged(any()) } returns Unit
     }
 
@@ -30,7 +30,7 @@ class DogBreedsViewModelTest {
     }
 
     private val mockDogBreedsViewStateMapper: DogBreedsViewStateMapper = mockk {
-        every { map(any()) } returns BrowseViewState.Ready(breeds = emptyList())
+        every { map(any()) } returns DogBreedsViewState.Ready(breeds = emptyList())
         every { mapToEntities(any()) } returns emptyList()
     }
 
@@ -40,16 +40,16 @@ class DogBreedsViewModelTest {
         subject.loadDogBreeds()
         coVerify { mockGetDogBreedsUseCase.execute() }
         verifyOrder {
-            browseViewStateObserver.onChanged(BrowseViewState.Loading)
-            browseViewStateObserver.onChanged(withArg {
-                Truth.assertThat(it).isInstanceOf(BrowseViewState.Ready::class.java)
+            dogBreedsViewStateObserver.onChanged(DogBreedsViewState.Loading)
+            dogBreedsViewStateObserver.onChanged(withArg {
+                Truth.assertThat(it).isInstanceOf(DogBreedsViewState.Ready::class.java)
             })
         }
     }
 
     private fun givenSubject(): DogBreedsViewModel {
         val subject = DogBreedsViewModel(mockGetDogBreedsUseCase, mockDogBreedsViewStateMapper)
-        subject.state.observeForever(browseViewStateObserver)
+        subject.state.observeForever(dogBreedsViewStateObserver)
         return subject
     }
 

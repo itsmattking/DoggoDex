@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
-    tools:context=".presentation.ui.DogBreedImagesFragment">
+    tools:context=".presentation.ui.DogBreedsFragment">
 
-    <me.mking.doggodex.presentation.ui.DogBreedImagesRecyclerView
-        android:id="@+id/dogBreedImagesRecycler"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/dogBreedRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/dog_breed_image_recycler_item" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <ProgressBar
-        android:id="@+id/dogBreedImagesProgressBar"
+        android:id="@+id/browseProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -40,5 +40,4 @@
             android:text="@string/loading_error_text"
             android:textAppearance="?attr/textAppearanceSubtitle2" />
     </LinearLayout>
-
 </FrameLayout>

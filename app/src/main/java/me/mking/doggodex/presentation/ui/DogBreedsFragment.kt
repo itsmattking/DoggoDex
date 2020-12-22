@@ -1,4 +1,4 @@
-package me.mking.doggodex.ui.browse
+package me.mking.doggodex.presentation.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,10 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import me.mking.doggodex.R
-import me.mking.doggodex.databinding.BrowseFragmentBinding
+import me.mking.doggodex.databinding.FragmentDogBreedsBinding
 import me.mking.doggodex.presentation.viewmodel.DogBreedsViewModel
-import me.mking.doggodex.presentation.viewstate.BrowseNavigation
-import me.mking.doggodex.presentation.viewstate.BrowseViewState
+import me.mking.doggodex.presentation.viewstate.DogBreedsNavigation
+import me.mking.doggodex.presentation.viewstate.DogBreedsViewState
 
 @AndroidEntryPoint
 class DogBreedsFragment : Fragment() {
@@ -24,12 +24,12 @@ class DogBreedsFragment : Fragment() {
 
     private val viewModel: DogBreedsViewModel by viewModels()
 
-    private lateinit var viewBinding: BrowseFragmentBinding
+    private lateinit var viewBinding: FragmentDogBreedsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) = BrowseFragmentBinding.inflate(inflater).apply {
+    ) = FragmentDogBreedsBinding.inflate(inflater).apply {
         viewBinding = this
     }.root
 
@@ -40,25 +40,25 @@ class DogBreedsFragment : Fragment() {
         viewModel.loadDogBreeds()
     }
 
-    private fun handleState(state: BrowseViewState) {
+    private fun handleState(state: DogBreedsViewState) {
         viewBinding.browseProgressBar.isVisible = false
         when (state) {
-            BrowseViewState.Loading -> viewBinding.browseProgressBar.isVisible = true
-            is BrowseViewState.Ready -> handleReadyState(state)
-            BrowseViewState.Error -> Unit
+            DogBreedsViewState.Loading -> viewBinding.browseProgressBar.isVisible = true
+            is DogBreedsViewState.Ready -> handleReadyState(state)
+            DogBreedsViewState.Error -> viewBinding.loadingError.isVisible = true
         }
     }
 
-    private fun handleReadyState(state: BrowseViewState.Ready) {
-        viewBinding.browseProgressBar.isVisible = false
+    private fun handleReadyState(state: DogBreedsViewState.Ready) {
+        viewBinding.loadingError.isVisible = false
         viewBinding.dogBreedRecycler.adapter = DogBreedsRecyclerAdapter(state.breeds) {
             viewModel.onDogBreedClicked(it)
         }
     }
 
-    private fun handleNavigation(navigation: BrowseNavigation) {
+    private fun handleNavigation(navigation: DogBreedsNavigation) {
         when (navigation) {
-            is BrowseNavigation.ToBreedImages -> findNavController().navigate(
+            is DogBreedsNavigation.ToBreedImages -> findNavController().navigate(
                 R.id.action_browseFragment_to_dogBreedImagesFragment,
                 bundleOf("dogBreedInput" to navigation.dogBreedInput)
             )

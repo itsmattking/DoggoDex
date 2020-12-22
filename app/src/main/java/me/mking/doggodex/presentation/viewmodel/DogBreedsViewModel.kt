@@ -12,20 +12,20 @@ import me.mking.doggodex.domain.entities.DogBreedEntity
 import me.mking.doggodex.domain.usecases.GetDogBreedsUseCase
 import me.mking.doggodex.presentation.DogBreedInput
 import me.mking.doggodex.presentation.mapper.DogBreedsViewStateMapper
-import me.mking.doggodex.presentation.viewstate.BrowseNavigation
-import me.mking.doggodex.presentation.viewstate.BrowseViewState
+import me.mking.doggodex.presentation.viewstate.DogBreedsNavigation
+import me.mking.doggodex.presentation.viewstate.DogBreedsViewState
 
 class DogBreedsViewModel @ViewModelInject constructor(
     private val getDogBreedsUseCase: GetDogBreedsUseCase,
     private val dogBreedsViewStateMapper: DogBreedsViewStateMapper
 ) : ViewModel() {
 
-    private val _state = MutableLiveData<BrowseViewState>()
-    val state: LiveData<BrowseViewState> = _state
+    private val _state = MutableLiveData<DogBreedsViewState>()
+    val state: LiveData<DogBreedsViewState> = _state
 
-    private val _navigation: SingleLiveEvent<BrowseNavigation> =
+    private val _navigation: SingleLiveEvent<DogBreedsNavigation> =
         SingleLiveEvent()
-    val navigation: LiveData<BrowseNavigation> = _navigation
+    val navigation: LiveData<DogBreedsNavigation> = _navigation
 
     private val dogBreeds: MutableList<DogBreedEntity> = mutableListOf()
 
@@ -33,7 +33,7 @@ class DogBreedsViewModel @ViewModelInject constructor(
         if (alreadyLoaded()) {
             return
         }
-        _state.value = BrowseViewState.Loading
+        _state.value = DogBreedsViewState.Loading
         viewModelScope.launch {
             val result = getDogBreedsUseCase.execute()
             dogBreeds.replaceWith(dogBreedsViewStateMapper.mapToEntities(result))
@@ -43,7 +43,7 @@ class DogBreedsViewModel @ViewModelInject constructor(
 
     fun onDogBreedClicked(position: Int) {
         val dogBreedEntity = dogBreeds[position]
-        _navigation.value = BrowseNavigation.ToBreedImages(
+        _navigation.value = DogBreedsNavigation.ToBreedImages(
             DogBreedInput(
                 dogBreedEntity.name,
                 dogBreedEntity.breed,
@@ -53,7 +53,7 @@ class DogBreedsViewModel @ViewModelInject constructor(
     }
 
     private fun alreadyLoaded() = with(_state.value) {
-        this is BrowseViewState.Ready
+        this is DogBreedsViewState.Ready
                 && this.breeds.isNotEmpty()
     }
 }
