@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_dog_breeds" >
         <action
             android:id="@+id/action_browseFragment_to_dogBreedImagesFragment"
-            app:destination="@id/dogBreedImagesFragment" />
+            app:destination="@id/dogBreedImagesFragment"
+            app:enterAnim="@anim/enter_bottom_alpha"
+            app:popExitAnim="@anim/exit_bottom_alpha" />
     </fragment>
     <fragment
         android:id="@+id/dogBreedImagesFragment"
