@@ -23,6 +23,6 @@
         tools:layout="@layout/fragment_dog_breed_images">
         <argument
             android:name="dogBreedInput"
-            app:argType="me.mking.doggodex.presentation.DogBreedInput" />
+            app:argType="me.mking.doggodex.presentation.viewmodel.DogBreedInput" />
     </fragment>
 </navigation>
