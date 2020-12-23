@@ -8,7 +8,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import me.mking.doggodex.common.data.DataResult
 import me.mking.doggodex.domain.usecases.GetDogBreedImagesUseCase
-import me.mking.doggodex.presentation.DogBreedInput
+import me.mking.doggodex.presentation.viewmodel.DogBreedInput
 import me.mking.doggodex.presentation.mapper.DogBreedImagesViewStateMapper
 import me.mking.doggodex.presentation.viewmodel.DogBreedImagesViewModel
 import me.mking.doggodex.presentation.viewstate.DogBreedImagesViewState

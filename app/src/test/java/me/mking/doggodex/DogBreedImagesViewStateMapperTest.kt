@@ -2,11 +2,9 @@ package me.mking.doggodex
 
 import com.google.common.truth.Truth
 import me.mking.doggodex.common.data.DataResult
-import me.mking.doggodex.domain.entities.DogBreedEntity
 import me.mking.doggodex.domain.entities.DogBreedImageEntity
-import me.mking.doggodex.presentation.DogBreedInput
+import me.mking.doggodex.presentation.viewmodel.DogBreedInput
 import me.mking.doggodex.presentation.mapper.DogBreedImagesViewStateMapper
-import me.mking.doggodex.presentation.mapper.DogBreedsViewStateMapper
 import me.mking.doggodex.presentation.viewstate.DogBreedImagesViewState
 import org.junit.Test
 

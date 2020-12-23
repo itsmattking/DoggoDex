@@ -1,4 +1,4 @@
-package me.mking.doggodex.presentation
+package me.mking.doggodex.presentation.viewmodel
 
 import android.os.Parcelable
 import androidx.annotation.Keep

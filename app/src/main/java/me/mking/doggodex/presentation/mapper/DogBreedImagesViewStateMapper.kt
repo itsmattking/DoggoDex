@@ -2,7 +2,7 @@ package me.mking.doggodex.presentation.mapper
 
 import me.mking.doggodex.common.data.DataResult
 import me.mking.doggodex.domain.entities.DogBreedImageEntity
-import me.mking.doggodex.presentation.DogBreedInput
+import me.mking.doggodex.presentation.viewmodel.DogBreedInput
 import me.mking.doggodex.presentation.viewstate.DogBreedImagesViewState
 import javax.inject.Inject
 

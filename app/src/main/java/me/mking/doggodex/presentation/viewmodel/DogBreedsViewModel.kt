@@ -10,7 +10,6 @@ import me.mking.doggodex.common.Extensions.replaceWith
 import me.mking.doggodex.common.presentation.SingleLiveEvent
 import me.mking.doggodex.domain.entities.DogBreedEntity
 import me.mking.doggodex.domain.usecases.GetDogBreedsUseCase
-import me.mking.doggodex.presentation.DogBreedInput
 import me.mking.doggodex.presentation.mapper.DogBreedsViewStateMapper
 import me.mking.doggodex.presentation.viewstate.DogBreedsNavigation
 import me.mking.doggodex.presentation.viewstate.DogBreedsViewState

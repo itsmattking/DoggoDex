@@ -9,7 +9,6 @@ import kotlinx.coroutines.launch
 import me.mking.doggodex.domain.entities.DogBreedEntity
 import me.mking.doggodex.domain.usecases.GetDogBreedImagesInput
 import me.mking.doggodex.domain.usecases.GetDogBreedImagesUseCase
-import me.mking.doggodex.presentation.DogBreedInput
 import me.mking.doggodex.presentation.mapper.DogBreedImagesViewStateMapper
 import me.mking.doggodex.presentation.viewstate.DogBreedImagesViewState
 
@@ -17,6 +16,10 @@ class DogBreedImagesViewModel @ViewModelInject constructor(
     private val getDogBreedImagesUseCase: GetDogBreedImagesUseCase,
     private val dogBreedImagesViewStateMapper: DogBreedImagesViewStateMapper
 ) : ViewModel() {
+
+    private companion object {
+        const val IMAGE_COUNT = 10
+    }
 
     private val _state: MutableLiveData<DogBreedImagesViewState> = MutableLiveData()
     val state: LiveData<DogBreedImagesViewState> = _state
@@ -33,7 +36,7 @@ class DogBreedImagesViewModel @ViewModelInject constructor(
                         name = dogBreedInput.name,
                         breed = dogBreedInput.breed,
                         subBreed = dogBreedInput.subBreed
-                    ), 10
+                    ), IMAGE_COUNT
                 )
             )
             _state.value = dogBreedImagesViewStateMapper.map(dogBreedInput, result)

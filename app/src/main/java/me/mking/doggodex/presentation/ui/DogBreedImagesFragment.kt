@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import me.mking.doggodex.databinding.FragmentDogBreedImagesBinding
-import me.mking.doggodex.presentation.DogBreedInput
+import me.mking.doggodex.presentation.viewmodel.DogBreedInput
 import me.mking.doggodex.presentation.viewmodel.DogBreedImagesViewModel
 import me.mking.doggodex.presentation.viewstate.DogBreedImagesViewState
 
